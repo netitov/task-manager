@@ -9,10 +9,17 @@ import { dateToInputValue, addDays } from '../../utils/DateFormater';
 function App() {
 
   const [taskModalActive, setTaskModalActive] = useState(false);
-  const[taskList, setTaskList] = useState([]);
+  const [taskList, setTaskList] = useState([]);
+  const [activeTask, setActiveTask] = useState({});
 
-  function openTaskModal() {
+  function openTaskModal(openedTask) {
     setTaskModalActive(true);
+    //pass the active task for modal window to prefill the form
+    if (openedTask.id) {
+      setActiveTask(openedTask);
+    } else {
+      setActiveTask({});
+    }
   }
 
   function closeTaskModal() {
@@ -24,6 +31,7 @@ function App() {
   }
 
   function saveTask(formData) {
+    console.log(formData)
     //add id to task
     const task = formData.id ? formData : {...formData, id: generateId() };
 
@@ -36,8 +44,21 @@ function App() {
       task.title = '(здесь могло быть название задачи)';
     }
 
+    setTaskList((prevState) => {
+      const updatedTasks = [...prevState];
+      const taskIndex = updatedTasks.findIndex((i) => i.id === task.id);
+
+      //if task exists, replace it with new values
+      if (taskIndex !== -1) {
+        updatedTasks[taskIndex] = { ...updatedTasks[taskIndex], ...task };
+      } else {
+        //if task new - add it to the list
+        updatedTasks.push(task);
+      }
+
+      return updatedTasks;
+    });
     updateLocalStorage(task);
-    setTaskList((prevState) => ([...prevState, task]));
     closeTaskModal();
   }
 
@@ -78,6 +99,8 @@ function App() {
           />
           <TaskTable
             tasks={taskList}
+            openTaskModal={openTaskModal}
+            saveTask={saveTask}
           />
         </div>
       </main>
@@ -86,6 +109,7 @@ function App() {
         modalActive={taskModalActive}
         closeModal={closeTaskModal}
         saveTask={saveTask}
+        activeTask={activeTask}
       />
 
     </div>

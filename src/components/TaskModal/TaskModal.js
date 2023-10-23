@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 
-function TaskModal({ modalActive, closeModal, saveTask }) {
+function TaskModal({ modalActive, closeModal, saveTask, activeTask }) {
 
   const [formData, setFormData] = useState({
     status: 'Ожидание'
   });
 
   function handeFormChange(e) {
-    let value = e.target.value || e.currentTarget.textContent;
+    const value = e.target.value || e.currentTarget.textContent;
     const name = e.target.name || e.currentTarget.getAttribute('name');
     setFormData({...formData, [name]: value })
   }
@@ -18,20 +18,31 @@ function TaskModal({ modalActive, closeModal, saveTask }) {
   }
 
 
-
-
-  //handle close modal overlay and esc press
+  //handle close modal overlay and esc press and clear form
   useEffect(() => {
+
+    //clearForm when modal window closed
+    if (!modalActive) {
+      setFormData({});
+    }
+
+    //fill form if current task opened
+    if (activeTask) {
+      setFormData(activeTask);
+    }
+
     function handleEscClose(e) {
       if (e.key === 'Escape') {
         closeModal();
       }
     }
+
     function handleOverlayClose(e) {
       if (e.target.classList.contains('task-modal_active')) {
         closeModal();
       }
     }
+
     document.addEventListener('keyup', handleEscClose);
     document.addEventListener('click', handleOverlayClose);
 
@@ -39,7 +50,7 @@ function TaskModal({ modalActive, closeModal, saveTask }) {
       document.removeEventListener('keyup', handleEscClose);
       document.removeEventListener('click', handleOverlayClose);
     };
-  }, []);
+  }, [modalActive]);
 
   return (
     <div className={`task-modal${modalActive ? ' task-modal_active' : ''}`}>
@@ -53,7 +64,7 @@ function TaskModal({ modalActive, closeModal, saveTask }) {
               name='title'
               onBlur={handeFormChange}
             >
-              {/* {formData.title || ''} */}
+              {formData.title || ''}
             </div>
           </label>
 
@@ -65,7 +76,7 @@ function TaskModal({ modalActive, closeModal, saveTask }) {
               name='description'
               onBlur={handeFormChange}
             >
-              {/* {formData.description || ''} */}
+              {formData.description || ''}
             </div>
           </label>
 

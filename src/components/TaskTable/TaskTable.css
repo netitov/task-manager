@@ -11,6 +11,14 @@
   box-shadow: 0px 3px 3px -1px #9c9c9c36;
 }
 
+.table__row {
+  transition: all 0.3s;
+}
+
+.table__row_completed {
+  opacity: 0.5;
+}
+
 .table__header {
   font-weight: 300;
   text-align: start;
@@ -34,7 +42,7 @@
 }
 
 .table__data {
-  padding: 10px 5px;
+  padding: 13px 5px;
   border-top: 1px solid #80808040;
 }
 
@@ -42,6 +50,13 @@
   outline: none;
   margin: 0;
   font-size: 17px;
+  padding: 5px;
+  border-radius: 10px;
+  transition: background-color 0.3s;
+}
+
+.table__task-title:hover {
+  background-color: #e4e0d4;
 }
 
 .table__check-label {
@@ -55,7 +70,7 @@
 }
 
 .table__check-label:hover {
-  border-color: #60a305;
+  border-color: #689f53;
 }
 
 .table__check-input {
@@ -67,11 +82,14 @@
 .table__check-input:checked ~ .table__check-label {
   background-image: url('../../assets/img/check.svg');
   background-size: cover;
+  border-color: #689f53;
 }
 
 .table__data-btns > div {
   display: flex;
   gap: 10px;
+  opacity: 0;
+  transition: opacity 0.3s;
 }
 
 .table__acn-btn {
@@ -79,8 +97,13 @@
   height: 25px;
   display: block;
   background-size: contain;
-  transition: all 0.3s;
+  transition: opacity 0.3s;
   cursor: pointer;
+
+}
+
+.table__row:hover .table__data-btns > div {
+  opacity: 1;
 }
 
 .table__acn-btn:hover {
@@ -115,15 +138,29 @@
 }
 
 .table__status {
-  font-weight: 300;
-  background: #d85935a3;
-  color: var(--background-color);
+  font-weight: 400;
+  /* background: #7c7a72; */
+  border: 2px solid #545350b0;
+  color: var(--main-grey);
+  background: none;
   border-radius: 10px;
-  border: none;
+  /* border: none; */
   padding: 2px 5px;
-  font-size: 16px;
+  font-size: 15px;
   outline: none;
   cursor: pointer;
+  transition: all 0.3s;
+}
+
+.table__status_progress {
+  border: 2px solid #e3c14bbd;
+}
+
+.table__status_completed {
+  /* background: transparent;
+  color: var(--main-grey); */
+
+  border: 2px solid #689f53;
 }
 
 .table__status option {

@@ -1,16 +1,39 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-function TaskTable({ tasks }) {
+function TaskTable({ tasks, openTaskModal, saveTask }) {
 
-  const [formData, setFormData] = useState({
-    status: 'Ожидание'
-  });
+  function handleChange(e, i) {
+    const name = e.target.name || e.target.getAttribute('name');
+    let value;
 
-  function handeFormChange(e) {
-    let value = e.target.value || e.currentTarget.textContent;
-    const name = e.target.name || e.currentTarget.getAttribute('name');
-    setFormData({...formData, [name]: value })
+    if (e.target.type === 'checkbox') {
+      value = e.target.checked;
+      //update status when task is completed via checkbox
+      const newStatus = value ? 'Выполнено' : 'В работе';
+      saveTask({ ...i, [name]: value, status: newStatus });
+
+    } else if (name === 'status') {
+      value = e.target.value;
+      //update checkbox when status is changed
+      const completeStatus = value === 'Выполнено' ? true : false;
+      saveTask({ ...i, [name]: value, completed: completeStatus });
+
+    } else {
+      value = e.target.value || e.target.textContent;
+      saveTask({ ...i, [name]: value });
+    }
   }
+
+  function getStatusStyle(status) {
+    if (status === 'Выполнено') {
+      return ' table__status_completed';
+    } else if (status === 'В работе') {
+      return ' table__status_progress';
+    } else {
+      return ''
+    }
+  }
+
 
   return (
     <table className='table'>
@@ -27,16 +50,24 @@ function TaskTable({ tasks }) {
       <tbody className='table__body'>
 
         {tasks.length ? tasks.map((i, index) => (
-          <tr className='table__row' key={index}>
+          <tr className={`table__row${i.completed ? ' table__row_completed' : ''}`} key={index}>
             <td className='table__data'>
-              <input type='checkbox' className='table__check-input' id={i.id} checked={i.done}></input>
-              <label className='table__check-label' htmlFor={i.id}></label>
+              <input
+                type='checkbox'
+                className='table__check-input'
+                name='completed'
+                onChange={(e) => handleChange(e, i)}
+                id={i.id}
+                checked={i.completed}
+              />
+              <label className='table__check-label' htmlFor={i.id} title='Выполнить'></label>
             </td>
             <td className='table__data' >
               <p
                 contentEditable={true}
                 className='table__task-title'
-                onBlur={handeFormChange}
+                name='title'
+                onBlur={(e) => handleChange(e, i)}
                 suppressContentEditableWarning={true}
               >
                 {i.title}
@@ -44,15 +75,37 @@ function TaskTable({ tasks }) {
             </td>
             <td className='table__data table__data-btns'>
               <div>
-                <button type='button' className='table__acn-btn table__acn-btn-edit'></button>
-                <button type='button' className='table__acn-btn table__acn-btn-delete'></button>
+                <button
+                  type='button'
+                  className='table__acn-btn table__acn-btn-edit'
+                  title='Редактировать задачу'
+                  onClick={() => openTaskModal(i)}
+                >
+                </button>
+                <button
+                  type='button'
+                  className='table__acn-btn table__acn-btn-delete'
+                  title='Удалить задачу'
+                >
+                </button>
               </div>
             </td>
             <td className='table__data'>
-              <input type='datetime-local' className='table__date' value={i.term} onChange={handeFormChange}></input>
+              <input
+                type='datetime-local'
+                className='table__date'
+                value={i.term}
+                onChange={(e) => handleChange(e, i)}
+                name='term'
+              />
             </td>
             <td className='table__data'>
-              <select className='table__status' value={i.status} onChange={handeFormChange}>
+              <select
+                className={`table__status${getStatusStyle(i.status)}`}
+                value={i.status}
+                onChange={(e) => handleChange(e, i)}
+                name='status'
+              >
                 <option>Ожидание</option>
                 <option>В работе</option>
                 <option>Выполнено</option>
