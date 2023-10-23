@@ -1,0 +1,147 @@
+.task-modal {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.407);
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.task-modal_active {
+  visibility: visible;
+  opacity: 1;
+}
+
+.task-modal__form {
+  width: 100%;
+  max-width: 600px;
+  min-height: 400px;
+  background-color: var(--main-grey);
+  color: var(--background-color);
+  border-radius: 15px;
+}
+
+.form__container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 40px;
+  gap: 40px;
+  position: relative;
+}
+
+.task-modal__label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 17px;
+  color: hsl(44deg 21.88% 84.28% / 62%);
+  font-size: 16px;
+}
+
+.task-modal__input {
+  background-color: transparent;
+  outline: none;
+  border: 0;
+  border-bottom: 1px solid hsl(44deg 21.88% 84.28% / 62%);
+  color: var(--background-color);
+  max-width: 300px;
+  font-weight: 300;
+  max-height: 90px;
+  overflow: hidden;
+  cursor: text;
+  font-size: 17px;
+  padding: 3px;
+  transition: all 0.3s;
+}
+
+.task-modal__input:focus, .task-modal__input:hover {
+  border-color: var(--background-color);
+}
+
+.task-modal__text-area {
+  max-width: 100%;
+  border: none;
+  background-color: #676662;
+  border-radius: 10px;
+  min-height: 80px;
+  resize: none;
+  padding: 7px;
+}
+
+.task-modal__text-area:focus, .task-modal__text-area:hover {
+  background-color: #71706b;
+}
+
+.task-modal__input-box {
+  display: flex;
+  gap: 10px;
+}
+
+.task-modal__date, .task-modal__status {
+  color: var(--background-color);
+  background-color: #676662;
+  transition: all 0.3s;
+}
+
+.task-modal__date:hover, .task-modal__status:hover {
+  background-color: #71706b;
+}
+
+.task-modal__btn-box {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+.task-modal__btn {
+  padding: 7px 10px;
+  font-weight: 300;
+  font-size: 17px;
+  color: hsl(44deg 36% 90% / 56%);
+  cursor: pointer;
+  transition: all 0.3s;
+  background-color: #4a4946;
+  border-radius: 15px;
+  box-sizing: border-box;
+  min-width: 110px;
+}
+
+.task-modal__btn-sbt {
+  color: var(--background-color);
+}
+
+.task-modal__btn:hover {
+  background-color: #41403d;
+}
+
+.task-modal__close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 4px;
+  border-radius: 50%;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.task-modal__close-btn > svg {
+  width: 27px;
+  height: 27px;
+  display: flex;
+}
+
+.task-modal__close-btn path {
+  fill: var(--background-color);
+}
+
+.task-modal__close-btn:hover {
+  background-color: #4a4946;
+}

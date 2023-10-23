@@ -1,0 +1,135 @@
+.table {
+  width: 100%;
+  border-spacing: 0;
+  table-layout: fixed;
+}
+
+.table__head-row {
+  position: sticky;
+  top: -1px;
+  background-color: var(--background-color);
+  box-shadow: 0px 3px 3px -1px #9c9c9c36;
+}
+
+.table__header {
+  font-weight: 300;
+  text-align: start;
+  padding: 3px 5px;
+}
+
+.table__header:first-of-type {
+  width: 32px;
+}
+
+.table__header:nth-of-type(3) {
+  width: 100px;
+}
+
+.table__header:nth-of-type(4) {
+  width: 150px;
+}
+
+.table__header:nth-of-type(5) {
+  width: 140px;
+}
+
+.table__data {
+  padding: 10px 5px;
+  border-top: 1px solid #80808040;
+}
+
+.table__task-title {
+  outline: none;
+  margin: 0;
+}
+
+.table__check-label {
+  width: 20px;
+  height: 20px;
+  display: block;
+  border: 2px solid var(--main-grey);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.table__check-label:hover {
+  border-color: #60a305;
+}
+
+.table__check-input {
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.table__check-input:checked ~ .table__check-label {
+  background-image: url('../../assets/img/check.svg');
+  background-size: cover;
+}
+
+.table__data-btns > div {
+  display: flex;
+  gap: 10px;
+}
+
+.table__acn-btn {
+  width: 25px;
+  height: 25px;
+  display: block;
+  background-size: contain;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.table__acn-btn:hover {
+  opacity: 0.7;
+}
+
+.table__acn-btn-edit {
+  background-image: url('../../assets/img/edit.svg');
+}
+
+.table__acn-btn-delete {
+  background-image: url('../../assets/img/delete.svg');
+}
+
+.table__date {
+  background: #debd9966;
+  border: none;
+  font-weight: 300;
+  padding: 3px 5px;
+  border-radius: 10px;
+  width: 117px;
+  cursor: pointer;
+  transition: all 0.3s;
+  color: var(--main-grey);
+  outline: none;
+  font-size: 16px;
+}
+
+.table__date:hover {
+  background: #debd99a8;
+  outline: none;
+}
+
+.table__status {
+  font-weight: 300;
+  background: #d85935a3;
+  color: var(--background-color);
+  border-radius: 10px;
+  border: none;
+  padding: 2px 5px;
+  font-size: 16px;
+  outline: none;
+  cursor: pointer;
+}
+
+.table__status option {
+  background-color: #fff;
+  font-weight: 300;
+  font-size: 16px;
+  color: var(--main-grey);
+}
+
+/*     background: #ff8c5d; */
