@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 
-function TaskTable() {
+function TaskTable({ tasks }) {
 
-  const [title, setTitle] = useState('Сделать что-то важное');
+  const [formData, setFormData] = useState({
+    status: 'Ожидание'
+  });
 
-  function handleChange(e) {
-    console.log(e.target.value)
-    setTitle(e.target.value);
+  function handeFormChange(e) {
+    let value = e.target.value || e.currentTarget.textContent;
+    const name = e.target.name || e.currentTarget.getAttribute('name');
+    setFormData({...formData, [name]: value })
   }
 
   return (
@@ -22,38 +25,41 @@ function TaskTable() {
       </thead>
 
       <tbody className='table__body'>
-        <tr className='table__row'>
-          <td className='table__data'>
-            <input type='checkbox' className='table__check-input' id='check'></input>
-            <label className='table__check-label' htmlFor='check'></label>
-          </td>
-          <td className='table__data' >
-            <p
-              contentEditable={true}
-              className='table__task-title'
-              onChange={handleChange}
-              suppressContentEditableWarning={true}
-            >
-              {title}
-            </p>
-          </td>
-          <td className='table__data table__data-btns'>
-            <div>
-              <button type='button' className='table__acn-btn table__acn-btn-edit'></button>
-              <button type='button' className='table__acn-btn table__acn-btn-delete'></button>
-            </div>
-          </td>
-          <td className='table__data'>
-            <input type='date' className='table__date'></input>
-          </td>
-          <td className='table__data'>
-            <select className='table__status'>
-              <option>Ожидание</option>
-              <option>В работе</option>
-              <option>Выполнено</option>
-            </select>
-          </td>
-        </tr>
+
+        {tasks.length ? tasks.map((i, index) => (
+          <tr className='table__row' key={index}>
+            <td className='table__data'>
+              <input type='checkbox' className='table__check-input' id={i.id} checked={i.done}></input>
+              <label className='table__check-label' htmlFor={i.id}></label>
+            </td>
+            <td className='table__data' >
+              <p
+                contentEditable={true}
+                className='table__task-title'
+                onBlur={handeFormChange}
+                suppressContentEditableWarning={true}
+              >
+                {i.title}
+              </p>
+            </td>
+            <td className='table__data table__data-btns'>
+              <div>
+                <button type='button' className='table__acn-btn table__acn-btn-edit'></button>
+                <button type='button' className='table__acn-btn table__acn-btn-delete'></button>
+              </div>
+            </td>
+            <td className='table__data'>
+              <input type='datetime-local' className='table__date' value={i.term} onChange={handeFormChange}></input>
+            </td>
+            <td className='table__data'>
+              <select className='table__status' value={i.status} onChange={handeFormChange}>
+                <option>Ожидание</option>
+                <option>В работе</option>
+                <option>Выполнено</option>
+              </select>
+            </td>
+          </tr>
+        )) : null}
       </tbody>
     </table>
   )

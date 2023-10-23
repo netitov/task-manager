@@ -25,6 +25,7 @@
   background-color: var(--main-grey);
   color: var(--background-color);
   border-radius: 15px;
+  box-shadow: 0px 0px 6px #00000087;
 }
 
 .form__container {
@@ -73,6 +74,7 @@
   min-height: 80px;
   resize: none;
   padding: 7px;
+  overflow: auto;
 }
 
 .task-modal__text-area:focus, .task-modal__text-area:hover {
@@ -88,6 +90,8 @@
   color: var(--background-color);
   background-color: #676662;
   transition: all 0.3s;
+  font-size: 15px;
+  text-align: start;
 }
 
 .task-modal__date:hover, .task-modal__status:hover {

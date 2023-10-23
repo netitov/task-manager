@@ -1,7 +1,26 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
-function TaskModal({ modalActive, closeModal }) {
+function TaskModal({ modalActive, closeModal, saveTask }) {
 
+  const [formData, setFormData] = useState({
+    status: 'Ожидание'
+  });
+
+  function handeFormChange(e) {
+    let value = e.target.value || e.currentTarget.textContent;
+    const name = e.target.name || e.currentTarget.getAttribute('name');
+    setFormData({...formData, [name]: value })
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    saveTask(formData);
+  }
+
+
+
+
+  //handle close modal overlay and esc press
   useEffect(() => {
     function handleEscClose(e) {
       if (e.key === 'Escape') {
@@ -24,10 +43,18 @@ function TaskModal({ modalActive, closeModal }) {
 
   return (
     <div className={`task-modal${modalActive ? ' task-modal_active' : ''}`}>
-      <form className='task-modal__form'>
+      <form className='task-modal__form' onSubmit={handleSubmit}>
         <div className='form__container'>
           <label className='task-modal__label'>Название задачи
-            <div className='task-modal__input' suppressContentEditableWarning={true} contentEditable={true}></div>
+            <div
+              className='task-modal__input'
+              suppressContentEditableWarning={true}
+              contentEditable={true}
+              name='title'
+              onBlur={handeFormChange}
+            >
+              {/* {formData.title || ''} */}
+            </div>
           </label>
 
           <label className='task-modal__label'>Описание
@@ -35,13 +62,28 @@ function TaskModal({ modalActive, closeModal }) {
               suppressContentEditableWarning={true}
               contentEditable={true}
               className='task-modal__input task-modal__text-area'
+              name='description'
+              onBlur={handeFormChange}
             >
+              {/* {formData.description || ''} */}
             </div>
           </label>
 
           <div className='task-modal__input-box'>
-            <input type='date' className='task-modal__date table__date'></input>
-            <select className='task-modal__status table__status'>
+            <input
+              type='datetime-local'
+              className='task-modal__date table__date'
+              name='term'
+              onChange={handeFormChange}
+              value={formData.term || ''}
+            >
+            </input>
+            <select
+              className='task-modal__status table__status'
+              name='status'
+              onChange={handeFormChange}
+              value={formData.status || ''}
+            >
               <option>Ожидание</option>
               <option>В работе</option>
               <option>Выполнено</option>
