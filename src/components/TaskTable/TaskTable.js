@@ -1,6 +1,6 @@
 import React from 'react';
 
-function TaskTable({ tasks, openTaskModal, saveTask }) {
+function TaskTable({ tasks, openTaskModal, saveTask, deleteTask }) {
 
   function handleChange(e, i) {
     const name = e.target.name || e.target.getAttribute('name');
@@ -24,6 +24,10 @@ function TaskTable({ tasks, openTaskModal, saveTask }) {
     }
   }
 
+  function handleDelete(i) {
+    deleteTask(i);
+  }
+
   function getStatusStyle(status) {
     if (status === 'Выполнено') {
       return ' table__status_completed';
@@ -33,7 +37,6 @@ function TaskTable({ tasks, openTaskModal, saveTask }) {
       return ''
     }
   }
-
 
   return (
     <table className='table'>
@@ -86,6 +89,7 @@ function TaskTable({ tasks, openTaskModal, saveTask }) {
                   type='button'
                   className='table__acn-btn table__acn-btn-delete'
                   title='Удалить задачу'
+                  onClick={() => handleDelete(i)}
                 >
                 </button>
               </div>

@@ -5,6 +5,7 @@ import TaskTable from '../TaskTable/TaskTable';
 import Actions from '../Actions/Actions';
 import TaskModal from '../TaskModal/TaskModal';
 import { dateToInputValue, addDays } from '../../utils/DateFormater';
+import { updateLocalStorage, removeFromLocalStorage } from '../../utils/LocalStorageHandler';
 
 function App() {
 
@@ -31,8 +32,7 @@ function App() {
   }
 
   function saveTask(formData) {
-    console.log(formData)
-    //add id to task
+      //add id to task
     const task = formData.id ? formData : {...formData, id: generateId() };
 
     //if user didn't select term - use next day
@@ -58,20 +58,17 @@ function App() {
 
       return updatedTasks;
     });
-    updateLocalStorage(task);
+    //updateLocalStorage(task);
+    updateLocalStorage(task, 'tasks');
     closeTaskModal();
   }
 
-  function updateLocalStorage(task) {
-    const savedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
-    const index = savedTasks.findIndex(item => item.id === task.id);
-
-    if (index !== -1) {
-      savedTasks[index] = task;
-    } else {
-      savedTasks.push(task);
-    }
-    localStorage.setItem('tasks', JSON.stringify(savedTasks));
+  function deleteTask(task) {
+    setTaskList((prevState) => {
+      const updatedTasks = prevState.filter((item) => item.id !== task.id);
+      return updatedTasks;
+    });
+    removeFromLocalStorage(task, 'tasks');
   }
 
   //set tasks from local storage
@@ -101,6 +98,7 @@ function App() {
             tasks={taskList}
             openTaskModal={openTaskModal}
             saveTask={saveTask}
+            deleteTask={deleteTask}
           />
         </div>
       </main>

@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react';
 function TaskModal({ modalActive, closeModal, saveTask, activeTask }) {
 
   const [formData, setFormData] = useState({
-    status: 'Ожидание'
+    status: 'Ожидание',
+    completed: false
   });
 
   function handeFormChange(e) {
@@ -23,11 +24,14 @@ function TaskModal({ modalActive, closeModal, saveTask, activeTask }) {
 
     //clearForm when modal window closed
     if (!modalActive) {
-      setFormData({});
+      setFormData({
+        status: 'Ожидание',
+        completed: false
+      });
     }
 
     //fill form if current task opened
-    if (activeTask) {
+    if (activeTask.id) {
       setFormData(activeTask);
     }
 

@@ -1,11 +1,10 @@
 .actions {
   display: flex;
   gap: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .actions__btn {
-  margin-bottom: 20px;
   font-weight: 300;
   background-color: var(--main-grey);
   color: var(--background-color);
