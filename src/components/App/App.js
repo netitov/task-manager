@@ -7,6 +7,7 @@ import TaskModal from '../TaskModal/TaskModal';
 import { dateToInputValue, addDays } from '../../utils/DateFormater';
 import { updateLocalStorage, removeFromLocalStorage } from '../../utils/LocalStorageHandler';
 import { compareByField } from '../../utils/Sorter';
+import { sendNotification, requestUserPermission } from '../../utils/Notifier';
 
 function App() {
 
@@ -93,9 +94,8 @@ function App() {
     setSortedField(sortedColumn);
   }
 
+  //show/hide complited tasks
   function toggleCompleted() {
-    //setCompletedHidden
-
     if (!completedHidden) {
       const filteredTasks = taskList.filter(i => !i.completed);
       setTaskList(filteredTasks);
@@ -104,11 +104,45 @@ function App() {
       setTaskList(fullTaskList);
       setCompletedHidden(false);
     }
-
   }
 
-  //set tasks from local storage
+
+  function sendTaskNotification(task, delayMinutes) {
+    const deadlineDate = new Date(task.term);
+
+    const notificationTime = new Date(deadlineDate.getTime() - delayMinutes * 60 * 1000);
+    const currentTime = new Date();
+
+    //count delay for function call
+    const timeDifference = notificationTime - currentTime;
+
+    //send notification in 'delayMinutes' before deadline
+    if (timeDifference > 0) {
+      setTimeout(() => {
+        const notificationTitle = task.title;
+        const notificationOptions = {
+          body: `Дедлайн через ${delayMinutes} минут`,
+        };
+        sendNotification(notificationTitle, notificationOptions);
+      }, timeDifference);
+    }
+  }
+
+  //call sendTaskNotification if taskList changed
   useEffect(() => {
+    if (taskList.length) {
+      taskList.forEach((i) => {
+        sendTaskNotification(i, 30);
+      })
+    }
+  }, [taskList])
+
+  //set tasks from local storage and request notification permission
+  useEffect(() => {
+
+    //request notification permission
+    requestUserPermission();
+
     const savedTasks = JSON.parse(localStorage.getItem('tasks'));
 
     //if there are saved tasks - render them
