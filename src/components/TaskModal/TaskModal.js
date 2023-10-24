@@ -10,12 +10,25 @@ function TaskModal({ modalActive, closeModal, saveTask, activeTask }) {
   function handeFormChange(e) {
     const value = e.target.value || e.currentTarget.textContent;
     const name = e.target.name || e.currentTarget.getAttribute('name');
-    setFormData({...formData, [name]: value })
+    //setFormData({...formData, [name]: value })
+
+    if (name === 'status') {
+      //update checkbox when status is changed
+      const completeStatus = value === 'Выполнено' ? true : false;
+      setFormData({ ...formData, [name]: value, completed: completeStatus });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   }
 
   function handleSubmit(e) {
     e.preventDefault();
-    saveTask(formData);
+    if (formData.createAt) {
+      saveTask(formData);
+    } else {
+      //add date of creation for new task
+      saveTask({...formData, createAt: new Date()});
+    }
   }
 
 

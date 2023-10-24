@@ -92,6 +92,7 @@
   transition: all 0.3s;
   font-size: 15px;
   text-align: start;
+  border: none;
 }
 
 .task-modal__date:hover, .task-modal__status:hover {

@@ -1,6 +1,6 @@
 import React from 'react';
 
-function TaskTable({ tasks, openTaskModal, saveTask, deleteTask }) {
+function TaskTable({ tasks, openTaskModal, saveTask, deleteTask, sortTable, sortedField }) {
 
   function handleChange(e, i) {
     const name = e.target.name || e.target.getAttribute('name');
@@ -28,6 +28,10 @@ function TaskTable({ tasks, openTaskModal, saveTask, deleteTask }) {
     deleteTask(i);
   }
 
+  /* function handleSorting(e) {
+    console.log(e.target.textContent)
+  } */
+
   function getStatusStyle(status) {
     if (status === 'Выполнено') {
       return ' table__status_completed';
@@ -38,15 +42,44 @@ function TaskTable({ tasks, openTaskModal, saveTask, deleteTask }) {
     }
   }
 
+  function getSortStye(field) {
+    if (sortedField[field]) {
+      if (sortedField[field] === 'asc') {
+        return ' table__header_asc';
+      } else if (sortedField[field] === 'desc') {
+        return ' table__header_desc';
+      } else {
+        return '';
+      }
+    } else {
+      return '';
+    }
+  }
+
   return (
     <table className='table'>
       <thead>
         <tr className='table__head-row'>
           <th className='table__header table__header-check'></th>
-          <th className='table__header'>Задача</th>
+          <th
+            className={`table__header${getSortStye('title')}`}
+            onClick={() => sortTable('title')}
+          >
+            Задача
+          </th>
           <th className='table__header'></th>
-          <th className='table__header'>Срок</th>
-          <th className='table__header'>Статус</th>
+          <th
+            className={`table__header${getSortStye('term')}`}
+            onClick={() => sortTable('term')}
+          >
+            Срок
+          </th>
+          <th
+            className={`table__header${getSortStye('status')}`}
+            onClick={() => sortTable('status')}
+          >
+            Статус
+          </th>
         </tr>
       </thead>
 

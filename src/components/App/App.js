@@ -6,12 +6,16 @@ import Actions from '../Actions/Actions';
 import TaskModal from '../TaskModal/TaskModal';
 import { dateToInputValue, addDays } from '../../utils/DateFormater';
 import { updateLocalStorage, removeFromLocalStorage } from '../../utils/LocalStorageHandler';
+import { compareByField } from '../../utils/Sorter';
 
 function App() {
 
   const [taskModalActive, setTaskModalActive] = useState(false);
+  const [fullTaskList, setFullTaskList] = useState([]);
   const [taskList, setTaskList] = useState([]);
   const [activeTask, setActiveTask] = useState({});
+  const [sortedField, setSortedField] = useState({});
+  const [completedHidden, setCompletedHidden] = useState(false);
 
   function openTaskModal(openedTask) {
     setTaskModalActive(true);
@@ -25,6 +29,7 @@ function App() {
 
   function closeTaskModal() {
     setTaskModalActive(false);
+    setActiveTask({});
   }
 
   function generateId() {
@@ -59,7 +64,8 @@ function App() {
       return updatedTasks;
     });
     //updateLocalStorage(task);
-    updateLocalStorage(task, 'tasks');
+    const updatedTaskList = updateLocalStorage(task, 'tasks');
+    setFullTaskList(updatedTaskList);
     closeTaskModal();
   }
 
@@ -68,7 +74,37 @@ function App() {
       const updatedTasks = prevState.filter((item) => item.id !== task.id);
       return updatedTasks;
     });
-    removeFromLocalStorage(task, 'tasks');
+    const updatedTaskList = removeFromLocalStorage(task, 'tasks');
+    setFullTaskList(updatedTaskList);
+  }
+
+  function sortTable(field) {
+    let sortedColumn = sortedField;
+    if (!sortedColumn[field]) {
+      sortedColumn = { [field]: 'asc' };
+    } else {
+      sortedColumn = sortedColumn[field] === 'asc' ?  { [field]: 'desc' } :  { [field]: 'asc' };
+    }
+
+    const sortedArr = [...taskList].sort(compareByField(field, sortedColumn[field]));
+
+    setTaskList(sortedArr);
+    //set sorted field for styling table header
+    setSortedField(sortedColumn);
+  }
+
+  function toggleCompleted() {
+    //setCompletedHidden
+
+    if (!completedHidden) {
+      const filteredTasks = taskList.filter(i => !i.completed);
+      setTaskList(filteredTasks);
+      setCompletedHidden(true);
+    } else {
+      setTaskList(fullTaskList);
+      setCompletedHidden(false);
+    }
+
   }
 
   //set tasks from local storage
@@ -78,11 +114,16 @@ function App() {
     //if there are saved tasks - render them
     if (savedTasks) {
       setTaskList(savedTasks);
+      setFullTaskList(savedTasks);
     } else {
       //otherwise create task-example
-      saveTask({ title: 'Это пример задачи' });
+      saveTask({
+        title: 'Это пример задачи',
+        status: 'Ожидание',
+        completed: false,
+        createAt: new Date()
+       });
     }
-
   }, [])
 
   return (
@@ -93,12 +134,19 @@ function App() {
         <div className='page__table-wrapper'>
           <Actions
             openTaskModal={openTaskModal}
+            sortTable={sortTable}
+            sortedField={sortedField}
+            toggleCompleted={toggleCompleted}
+            completedHidden={completedHidden}
+            taskList={taskList}
           />
           <TaskTable
             tasks={taskList}
             openTaskModal={openTaskModal}
             saveTask={saveTask}
             deleteTask={deleteTask}
+            sortTable={sortTable}
+            sortedField={sortedField}
           />
         </div>
       </main>

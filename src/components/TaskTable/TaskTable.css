@@ -23,6 +23,19 @@
   font-weight: 300;
   text-align: start;
   padding: 3px 5px;
+  cursor: pointer;
+}
+
+.table__header_asc:after {
+  content: '🠇';
+  margin-left: 2px;
+  color: #545350b0;
+}
+
+.table__header_desc:after {
+  content: '🠅';
+  margin-left: 2px;
+  color: #545350b0;
 }
 
 .table__header:first-of-type {

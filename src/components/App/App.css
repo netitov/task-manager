@@ -18,12 +18,13 @@ body {
   font-size: 18px;
   font-weight: 300;
   min-height: 100vh;
-  overflow: hidden;
+  /* overflow: hidden; */
   padding: 0;
 }
 
 .page__table-wrapper {
   width: 100%;
   max-width: 850px;
-  margin: 55px auto;
+  margin: 55px auto 0;
+  padding: 0 10px 55px;
 }
