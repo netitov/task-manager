@@ -4,7 +4,7 @@
 
 Add and controll your tasks, get notifications.
 
-View the project: <>
+View the project: <https://netitov.github.io/task-manager/>
 
 ### Features and content
 
