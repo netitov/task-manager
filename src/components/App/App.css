@@ -23,8 +23,9 @@ body {
 }
 
 .page__table-wrapper {
-  width: 100%;
+  width: 97%;
   max-width: 850px;
   margin: 55px auto 0;
-  padding: 0 10px 55px;
+  padding: 0 0 55px;
+  overflow-x: auto;
 }

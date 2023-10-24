@@ -75,7 +75,7 @@ function TaskTable({ tasks, openTaskModal, saveTask, deleteTask, sortTable, sort
             Срок
           </th>
           <th
-            className={`table__header${getSortStye('status')}`}
+            className={`table__header table__header-status${getSortStye('status')}`}
             onClick={() => sortTable('status')}
           >
             Статус
@@ -136,7 +136,7 @@ function TaskTable({ tasks, openTaskModal, saveTask, deleteTask, sortTable, sort
                 name='term'
               />
             </td>
-            <td className='table__data'>
+            <td className='table__data table__data-status'>
               <select
                 className={`table__status${getStatusStyle(i.status)}`}
                 value={i.status}
